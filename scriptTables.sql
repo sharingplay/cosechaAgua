@@ -1,4 +1,4 @@
---CREATE EXTENSION pgcrypto;
+CREATE EXTENSION pgcrypto;
 
 --Users table 
 create Table Users (
@@ -7,8 +7,8 @@ create Table Users (
 	firstLastName varchar (20) not null,
 	secondLastName varchar (20) not null,
 	email varchar (50) not null,
-	password varchar not null,
 	phoneNumber varchar (20) not null,
+	password varchar not null,
 	PRIMARY key (userName)
 );
 
