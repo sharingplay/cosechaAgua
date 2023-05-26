@@ -94,6 +94,13 @@ create table WQ_solids(
 	PRIMARY KEY (idSolids)
 );
 
+create table WQ_temperature(
+	idTemperature integer not null,
+	idReport integer not null,
+	temperature float not null,
+	PRIMARY KEY (idTemperature)
+);
+
 create table WQ_volume(
 	idVolume integer not null,
 	idReport integer not null,
@@ -184,6 +191,12 @@ create table AR_windDirection(
 	PRIMARY KEY (idWindDirection)
 );
 
+
+alter table Users 
+add constraint unique_email
+unique (email);
+
+-- <<<Foreign Keys>>>
 --Table constraints atmospheric radiation
 alter table AR_radiation
 add constraint FK_idReportRadiation
@@ -229,8 +242,6 @@ alter table AR_windDirection
 add constraint FK_idReportwindDirection
 foreign key (idReport) references atmosphericReport(idReport);
 
-
--- <<<Foreign Keys>>>
 
 --Table constraints Quality Device
 alter table QualityDevice 
