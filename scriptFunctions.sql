@@ -33,3 +33,36 @@ CREATE OR REPLACE FUNCTION modifyUser (UserName_r varchar, Name_r varchar, First
 	END;
 	$$
 LANGUAGE plpgsql;
+
+--*****Device Location table*****
+--Add a new device location
+CREATE OR REPLACE FUNCTION addDeviceLocation(located_r varchar, latitude_r varchar, longitude_r varchar) RETURNS void AS 
+	$$
+	insert into DeviceLocation (located, latitude, longitude) values (located_r, latitude_r, longitude_r);
+	$$
+Language SQL;
+
+--Get locations
+CREATE OR REPLACE FUNCTION getLocations() RETURNS deviceLocation AS 
+	$$
+	SELECT * from DeviceLocation;
+	$$
+Language SQL;
+
+--Update Device Location
+CREATE OR REPLACE FUNCTION modifyDeviceLocation(located_old varchar, located_new varchar, latitude_new varchar, longitude_new varchar) RETURNS void AS 
+	$$
+	UPDATE DeviceLocation
+	SET	located = located_new, latitude = latitude_new, longitude = longitude_new
+	WHERE located = located_old;
+	$$
+Language SQL;
+
+--*****Frequencies table*****
+--Add a new device location
+CREATE OR REPLACE FUNCTION addDeviceLocation(located_r varchar, latitude_r varchar, longitude_r varchar) RETURNS void AS 
+	$$
+	insert into DeviceLocation (located, latitude, longitude) values (located_r, latitude_r, longitude_r);
+	$$
+Language SQL;
+
