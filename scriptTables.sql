@@ -13,7 +13,7 @@ create Table Users (
 );
 
 create table DeviceLocation(
-	located varchar(30) not null,
+	located varchar(50) not null,
 	latitude varchar(30) not null,
 	longitude varchar(30) not null,
 	PRIMARY key (located)
