@@ -19,12 +19,12 @@ create table DeviceLocation(
 	PRIMARY key (located)
 );
 
-create table Frecuencies(
-	idFrecuency integer not null,
+create table Frequencies(
+	idFrequency integer not null,
 	meassureFrequency float not null,
 	sendFrequency float not null,
 	messageFrequency float not null,
-	PRIMARY KEY (idFrecuency)
+	PRIMARY KEY (idFrequency)
 );
 
 create table timeVector (
@@ -40,7 +40,7 @@ create table QualityDevice(
 	mac varchar (30) not null,
 	tolerance float not null,
 	phoneNumber varchar (30) not null,
-	idFrecuency integer not null,
+	idFrequency integer not null,
 	located varchar (30) not null,
 	PRIMARY KEY (idDevice)	
 );
@@ -116,7 +116,7 @@ create table atmosphericDevice(
 	mac varchar (30) not null,
 	tolerance float not null,
 	phoneNumber varchar (30) not null,
-	idFrecuency integer not null,
+	idFrequency integer not null,
 	located varchar (30) not null,
 	PRIMARY KEY (idDevice)	
 );
@@ -246,7 +246,7 @@ foreign key (idReport) references atmosphericReport(idReport);
 --Table constraints Quality Device
 alter table QualityDevice 
 add constraint FK_idFrequency
-foreign key (idFrecuency) references Frecuencies(idFrecuency);
+foreign key (idFrequency) references Frequencies(idFrequency);
 
 alter table QualityDevice 
 add constraint FK_location
@@ -255,7 +255,7 @@ foreign key (located) references DeviceLocation(located);
 --Table constraints Atmospheric Device
 alter table AtmosphericDevice 
 add constraint FK_idFrequencyQuality
-foreign key (idFrecuency) references Frecuencies(idFrecuency);
+foreign key (idFrequency) references Frequencies(idFrequency);
 
 alter table AtmosphericDevice 
 add constraint FK_locationQuality
