@@ -82,3 +82,43 @@ CREATE OR REPLACE FUNCTION modifyFrequencies(idFrequency_r integer, meassureFreq
 	$$
 Language SQL;
 
+
+--*****Quality Device table*****
+--Add a new Quality device
+CREATE OR REPLACE FUNCTION addQualityDevice(idDevice integer, ip varchar, mac varchar, tolerance float, phoneNumber varchar, idFrequency integer, located varchar) RETURNS void AS 
+	$$
+	insert into QualityDevice values (idDevice, ip, mac, tolerance, phoneNumber, idFrequency, located);
+	$$
+Language SQL;
+
+--Update a Quality Device
+CREATE OR REPLACE FUNCTION modifyQualityDevice(idDevice_r integer, ip_new varchar, mac_new varchar, tolerance_new float,
+											   phoneNumber_new varchar, idFrequency_new integer, located_new varchar) RETURNS void AS 
+	$$
+	UPDATE QualityDevice set ip = ip_new, mac = mac_new, tolerance = tolerance_new, phoneNumber = phoneNumber_new,
+	idFrequency = idFrequency_new, located = located_new
+	WHERE idDevice = idDevice_r;
+	$$
+Language SQL;
+
+--Get the last quality device created according to the highest id
+CREATE OR REPLACE FUNCTION getLastQualityDevice() RETURNS QualityDevice AS
+	$$
+	select * from QualityDevice
+	order by idDevice desc;
+	$$
+Language SQL;
+
+--Get all the quality devices created
+CREATE OR REPLACE FUNCTION getQualityDevices() RETURNS SETOF QualityDevice AS
+	$$
+	select * from QualityDevice
+	$$
+Language SQL;
+
+
+
+
+
+
+
