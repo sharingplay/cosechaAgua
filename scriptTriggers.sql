@@ -17,13 +17,6 @@ CREATE OR REPLACE Function check_timeVector() returns trigger as $$
 	END;
 $$ LANGUAGE plpgsql;
 
---Function that is activated by triggers to handle Foreign Keys of devices in case a location is updated
-CREATE OR REPLACE Function validate_location() returns trigger as $$
-	BEGIN
-	
-	END;
-$$ LANGUAGE plpgsql;
-
 --*****Triggers water quality report*****
 Create Trigger manageTimeVector before insert on waterQuality
 for each row

@@ -43,7 +43,7 @@ CREATE OR REPLACE FUNCTION addDeviceLocation(located_r varchar, latitude_r varch
 Language SQL;
 
 --Get locations
-CREATE OR REPLACE FUNCTION getLocations() RETURNS deviceLocation AS 
+CREATE OR REPLACE FUNCTION getLocations() RETURNS SETOF deviceLocation AS 
 	$$
 	SELECT * from DeviceLocation;
 	$$
@@ -52,9 +52,16 @@ Language SQL;
 --Update Device Location
 CREATE OR REPLACE FUNCTION modifyDeviceLocation(located_old varchar, located_new varchar, latitude_new varchar, longitude_new varchar) RETURNS void AS 
 	$$
-	UPDATE DeviceLocation
-	SET	located = located_new, latitude = latitude_new, longitude = longitude_new
+	--Creates a new input on the table
+	INSERT into DeviceLocation (located, latitude, longitude) values (located_new, latitude_new, longitude_new);
+	
+	--Updates quality devices that used the old location
+	UPDATE QualityDevice
+	SET	located = located_new
 	WHERE located = located_old;
+	
+	--Deletes old location from device location
+	DELETE FROM DeviceLocation WHERE located = located_old;
 	$$
 Language SQL;
 
@@ -75,7 +82,7 @@ Language SQL;
 
 --Update Frequencies
 CREATE OR REPLACE FUNCTION modifyFrequencies(idFrequency_r integer, meassureFrequency_r float, sendFrequency_r float, messageFrequency_r float) RETURNS void AS
-	$$
+	$$	
 	UPDATE Frequencies
 	SET	meassureFrequency = meassureFrequency_r, sendFrequency = sendFrequency_r, messageFrequency = messageFrequency_r
 	WHERE idFrequency = idFrequency_r;
