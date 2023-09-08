@@ -60,6 +60,11 @@ CREATE OR REPLACE FUNCTION modifyDeviceLocation(located_old varchar, located_new
 	SET	located = located_new
 	WHERE located = located_old;
 	
+	--Updates atmospheric devices that used the old location
+	UPDATE AtmosphericDevice
+	SET	located = located_new
+	WHERE located = located_old;
+	
 	--Deletes old location from device location
 	DELETE FROM DeviceLocation WHERE located = located_old;
 	$$
@@ -137,6 +142,45 @@ CREATE OR REPLACE FUNCTION getQualityDevice(idDevice_r integer) RETURNS SETOF Qu
 	$$
 Language SQL;
 
+--*****Atmospheric Device table*****
+--Add a new Atmospheric device
+CREATE OR REPLACE FUNCTION addAtmosphericDevice(idDevice integer, ip varchar, mac varchar, tolerance float, phoneNumber varchar, idFrequency integer, located varchar) RETURNS void AS 
+	$$
+	insert into atmosphericDevice values (idDevice, ip, mac, tolerance, phoneNumber, idFrequency, located);
+	$$
+Language SQL;
+
+--Update a Atmospheric Device
+CREATE OR REPLACE FUNCTION modifyAtmosphericDevice(idDevice_r integer, ip_new varchar, mac_new varchar, tolerance_new float,
+											   phoneNumber_new varchar, idFrequency_new integer, located_new varchar) RETURNS void AS 
+	$$
+	UPDATE AtmosphericDevice set ip = ip_new, mac = mac_new, tolerance = tolerance_new, phoneNumber = phoneNumber_new,
+	idFrequency = idFrequency_new, located = located_new
+	WHERE idDevice = idDevice_r;
+	$$
+Language SQL;
+
+--Get the last atmospheric device created according to the highest id
+CREATE OR REPLACE FUNCTION getLastAtmosphericDevice() RETURNS AtmosphericDevice AS
+	$$
+	select * from AtmosphericDevice
+	order by idDevice desc;
+	$$
+Language SQL;
+
+--Get all the atmospheric devices created
+CREATE OR REPLACE FUNCTION getAtmosphericDevices() RETURNS SETOF AtmosphericDevice AS
+	$$
+	select * from AtmosphericDevice
+	$$
+Language SQL;
+
+--Get atmospheric device by id
+CREATE OR REPLACE FUNCTION getAtmosphericDevice(idDevice_r integer) RETURNS SETOF AtmosphericDevice AS
+	$$
+	select * from AtmosphericDevice where idDevice = idDevice_r;
+	$$
+Language SQL;
 
 
 
