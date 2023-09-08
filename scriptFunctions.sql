@@ -80,6 +80,13 @@ CREATE OR REPLACE FUNCTION getFrequencies() RETURNS SETOF Frequencies AS
 	$$
 Language SQL;
 
+--Get frequencies by id
+CREATE OR REPLACE FUNCTION getFrequency(idFrequency_r integer) RETURNS Frequencies AS 
+	$$
+	select * from Frequencies where idFrequency = idFrequency_r;
+	$$
+Language SQL;
+
 --Update Frequencies
 CREATE OR REPLACE FUNCTION modifyFrequencies(idFrequency_r integer, meassureFrequency_r float, sendFrequency_r float, messageFrequency_r float) RETURNS void AS
 	$$	
@@ -120,6 +127,13 @@ Language SQL;
 CREATE OR REPLACE FUNCTION getQualityDevices() RETURNS SETOF QualityDevice AS
 	$$
 	select * from QualityDevice
+	$$
+Language SQL;
+
+--Get quality device by id
+CREATE OR REPLACE FUNCTION getQualityDevice(idDevice_r integer) RETURNS SETOF QualityDevice AS
+	$$
+	select * from QualityDevice where idDevice = idDevice_r;
 	$$
 Language SQL;
 

@@ -24,7 +24,9 @@ SELECT addQualityDevice(1, '123.412', '456.123', '5.4', '+50699887766', 2, 'Cart
 SELECT addQualityDevice(2, '000.123.412', '000.456.123', '6.7', '+506111111', 1, 'Cartaguito');
 SELECT getLastQualityDevice();
 SELECT modifyQualityDevice (2, '987.654','888.777', 1.5, '+50624451234', 1, 'San Jose');
-SELECT * from getQualityDevices();
+SELECT getQualityDevice(2);
+SELECT getQualityDevices();
+
 
 
 select * from QualityDevice;
