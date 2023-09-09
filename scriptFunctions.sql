@@ -267,8 +267,61 @@ CREATE OR REPLACE FUNCTION addAtmosphericReport(idDevice_r integer) RETURNS inte
 	$$
 Language plpgsql;
 
-SELECT addAtmosphericReport(1);
+--*****AR Volume table*****
+CREATE OR REPLACE FUNCTION addARVolume(idVolume_r integer, idReport_r integer, volume_r float) RETURNS void AS
+	$$
+	insert into AR_volume values (idVolume_r, idReport_r, volume_r);
+	$$
+Language SQL;
 
+--*****AR Radiation table*****
+CREATE OR REPLACE FUNCTION addRadiation(idRadiation_r integer, idReport_r integer, radiation_r float) RETURNS void AS
+	$$
+	insert into AR_radiation values (idRadiation_r, idReport_r, radiation_r);
+	$$
+Language SQL;
+
+--*****AR light table*****
+CREATE OR REPLACE FUNCTION addLight(idLight_r integer, idReport_r integer, light_r float) RETURNS void AS
+	$$
+	insert into AR_light values (idLight_r, idReport_r, light_r);
+	$$
+Language SQL;
+
+--*****AR temperature table*****
+CREATE OR REPLACE FUNCTION addARTemperature(idTemperature_r integer, idReport_r integer, temperature_r float) RETURNS void AS
+	$$
+	insert into AR_temperature values (idTemperature_r, idReport_r, temperature_r);
+	$$
+Language SQL;
+
+--*****AR humidity table*****
+CREATE OR REPLACE FUNCTION addHumidity(idHumidity_r integer, idReport_r integer, humidity_r float) RETURNS void AS
+	$$
+	insert into AR_humidity values (idHumidity_r, idReport_r, humidity_r);
+	$$
+Language SQL;
+
+--*****AR pressure table*****
+CREATE OR REPLACE FUNCTION addPressure(idPressure_r integer, idReport_r integer, pressure_r float) RETURNS void AS
+	$$
+	insert into AR_pressure values (idPressure_r, idReport_r, pressure_r);
+	$$
+Language SQL;
+
+--*****AR wind speed table*****
+CREATE OR REPLACE FUNCTION addWindSpeed(idWindSpeed_r integer, idReport_r integer, windSpeed_r float) RETURNS void AS
+	$$
+	insert into AR_windSpeed values (idWindSpeed_r, idReport_r, windSpeed_r);
+	$$
+Language SQL;
+
+--*****AR wind direction table*****
+CREATE OR REPLACE FUNCTION addWindDirection(idWindDirection_r integer, idReport_r integer, windDirection_r float) RETURNS void AS
+	$$
+	insert into AR_windDirection values (idWindDirection_r, idReport_r, windDirection_r);
+	$$
+Language SQL;
 
 
 

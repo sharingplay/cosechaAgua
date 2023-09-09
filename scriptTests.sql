@@ -57,12 +57,22 @@ SELECT addWQVolume(3,3,20);
 
 --Atmospheric Report
 SELECT addAtmosphericReport(1);
+--AR volume
+SELECT addARVolume(3,3,20);
+--AR radiation
+SELECT addRadiation(4,3,52);
+--AR precipitation
+SELECT addPrecipitation(2,3,12);
+--AR light
+SELECT addLight(1,3,33);
+--AR temperature
+SELECT addARTemperature(1,3,32);
+--AR humidity
+SELECT addHumidity(1,3,14);
+--AR pressure
+SELECT addPressure(1,3,31.2);
+--AR wind speed
+SELECT addWindSpeed(1,3,11);
+--AR wind direction
+SELECT addWindDirection(1,3,12);
 
-select * from WQ_volume;
-select * from waterQuality;
-select * from atmosphericReport;
-
-
-
-
-select * from QualityDevice;
