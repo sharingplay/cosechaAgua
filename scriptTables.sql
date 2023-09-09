@@ -1,4 +1,4 @@
-CREATE EXTENSION pgcrypto;
+	CREATE EXTENSION pgcrypto;
 
 --Users table 
 create Table Users (

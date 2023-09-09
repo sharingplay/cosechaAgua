@@ -12,7 +12,7 @@ CREATE OR REPLACE Function check_timeVector() returns trigger as $$
 			insert into timeVector(dateTime)
 			values (timeNow);
 		End if;
-		NEW.idTimeVector := (select timeVector.idTime from timeVector where dateTime = timeNow);
+		NEW.idTime := (select timeVector.idTime from timeVector where dateTime = timeNow);
 		Return NEW;
 	END;
 $$ LANGUAGE plpgsql;

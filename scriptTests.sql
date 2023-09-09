@@ -34,7 +34,34 @@ SELECT getLastAtmosphericDevice();
 SELECT getAtmosphericDevices();
 SELECT getAtmosphericDevice(1);
 
-select * from atmosphericdevice
+
+--Water Quality Report
+SELECT addQualityReport(2);
+--WQ Conductivity
+SELECT addConductivity(2,2,20.5);
+--WQ PH
+SELECT addPH(5,2,7);
+--WQ water level
+SELECT addWaterlvl(1,2,10.3);
+--WQ salinity
+SELECT addsalinity(1,3,7.5);
+--WQ turbidity
+SELECT addTurbidity(1,3,7.5);
+--WQ solids
+SELECT addSolids(1,3,7.5);
+--WQ temperature
+SELECT addWQTemperature(3,3,23);
+--WQ volume
+SELECT addWQVolume(3,3,20);
+
+
+--Atmospheric Report
+SELECT addAtmosphericReport(1);
+
+select * from WQ_volume;
+select * from waterQuality;
+select * from atmosphericReport;
+
 
 
 

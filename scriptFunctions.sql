@@ -182,7 +182,92 @@ CREATE OR REPLACE FUNCTION getAtmosphericDevice(idDevice_r integer) RETURNS SETO
 	$$
 Language SQL;
 
+--*****Water Quality Report table*****
+--Creates a new report, sets the time with a time vector and returns the id of this report
+CREATE OR REPLACE FUNCTION addQualityReport(idDevice_r integer) RETURNS integer AS
+	$$
+	DECLARE
+		idReportCreated integer;
+	BEGIN
+		insert into waterQuality(idDevice) values (idDevice_r);
+		select MAX(idReport) from waterQuality into idReportCreated;
+		return idReportCreated;
+	END;
+	$$
+Language plpgsql;
 
+--*****WQ Conductivity table*****
+CREATE OR REPLACE FUNCTION addConductivity(idConduct_r integer, idReport_r integer, conductivity_r float) RETURNS void AS
+	$$
+	insert into WQ_conductivity values (idConduct_r, idReport_r, conductivity_r);
+	$$
+Language SQL;
+
+--*****WQ PH table*****
+CREATE OR REPLACE FUNCTION addPH(idPH_r integer, idReport_r integer, ph_r float) RETURNS void AS
+	$$
+	insert into WQ_PH values (idPH_r, idReport_r, ph_r);
+	$$
+Language SQL;
+
+--*****WQ water level table*****
+CREATE OR REPLACE FUNCTION addWaterlvl(idWaterlvl_r integer, idReport_r integer, waterlevel_r float) RETURNS void AS
+	$$
+	insert into WQ_waterlvl values (idWaterlvl_r, idReport_r, waterlevel_r);
+	$$
+Language SQL;
+
+--*****WQ salinity table*****
+CREATE OR REPLACE FUNCTION addSalinity(idSalinity_r integer, idReport_r integer, salinity_r float) RETURNS void AS
+	$$
+	insert into WQ_salinity values (idSalinity_r, idReport_r, salinity_r);
+	$$
+Language SQL;
+
+--*****WQ turbidity table*****
+CREATE OR REPLACE FUNCTION addTurbidity(idTurbidity_r integer, idReport_r integer, turbidity_r float) RETURNS void AS
+	$$
+	insert into WQ_turbidity values (idTurbidity_r, idReport_r, turbidity_r);
+	$$
+Language SQL;
+
+--*****WQ Solids table*****
+CREATE OR REPLACE FUNCTION addSolids(idSolids_r integer, idReport_r integer, solid_r float) RETURNS void AS
+	$$
+	insert into WQ_solids values (idSolids_r, idReport_r, solid_r);
+	$$
+Language SQL;
+
+--*****WQ temperature table*****
+CREATE OR REPLACE FUNCTION addWQTemperature(idTemperature_r integer, idReport_r integer, temperature_r float) RETURNS void AS
+	$$
+	insert into WQ_temperature values (idTemperature_r, idReport_r, temperature_r);
+	$$
+Language SQL;
+
+--*****WQ Volume table*****
+CREATE OR REPLACE FUNCTION addWQVolume(idVolume_r integer, idReport_r integer, volume_r float) RETURNS void AS
+	$$
+	insert into WQ_volume values (idVolume_r, idReport_r, volume_r);
+	$$
+Language SQL;
+
+
+--*****Atmospheric Report table*****
+--Creates a new report, sets the time with a time vector and returns the id of this report
+CREATE OR REPLACE FUNCTION addAtmosphericReport(idDevice_r integer) RETURNS integer AS
+	$$
+	DECLARE
+		idReportCreated integer;
+	BEGIN
+		insert into atmosphericReport(idDevice) values (idDevice_r);
+		select MAX(idReport) from atmosphericReport into idReportCreated;
+		return idReportCreated;
+	END;
+	$$
+Language plpgsql;
+
+SELECT addAtmosphericReport(1);
 
 
 
