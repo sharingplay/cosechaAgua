@@ -58,21 +58,39 @@ SELECT addWQVolume(3,3,20);
 --Atmospheric Report
 SELECT addAtmosphericReport(1);
 --AR volume
-SELECT addARVolume(3,3,20);
+SELECT addARVolume(1,5,44);
 --AR radiation
-SELECT addRadiation(4,3,52);
+SELECT addRadiation(1,5,55);
 --AR precipitation
-SELECT addPrecipitation(2,3,12);
+SELECT addPrecipitation(1,5,66.4);
 --AR light
-SELECT addLight(1,3,33);
+SELECT addLight(1,5,33);
 --AR temperature
-SELECT addARTemperature(1,3,32);
+SELECT addARTemperature(1,5,34.5);
 --AR humidity
-SELECT addHumidity(1,3,14);
+SELECT addHumidity(1,5,75.2);
 --AR pressure
-SELECT addPressure(1,3,31.2);
+SELECT addPressure(1,5,11.2);
 --AR wind speed
-SELECT addWindSpeed(1,3,11);
+SELECT addWindSpeed(1,5,10.5);
 --AR wind direction
-SELECT addWindDirection(1,3,12);
+SELECT addWindDirection(1,5,45.1);
+--Last report
+SELECT * from getLastAtmosphericReport();
+--Reports between specific times *************************PROBAR ESTA FUNCION pero corregir antes lo de arreglar multiples sensores
+select * from getAtmosphericReports(1, '2023-09-09 01:00:00', '2023-09-17 17:00:00')
+
+select * from atmosphericReport;
+select * from AR_radiation;
+select * from AR_volume;
+select * from AR_light;
+select * from AR_precipitation;
+select * from AR_temperature;
+select * from AR_humidity;
+select * from AR_pressure;
+select * from AR_windSpeed;
+select * from AR_windDirection;
+select * from timeVector;
+
+SELECT * from CURRENT_TIMESTAMP;
 

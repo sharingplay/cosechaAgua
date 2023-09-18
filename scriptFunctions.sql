@@ -267,6 +267,77 @@ CREATE OR REPLACE FUNCTION addAtmosphericReport(idDevice_r integer) RETURNS inte
 	$$
 Language plpgsql;
 
+--Returns the values of the last report created
+CREATE OR REPLACE FUNCTION getLastAtmosphericReport() 
+RETURNS TABLE(idReport integer,
+			  radiation float,
+			  volume float,
+			  precipitation float,
+			  light float,
+			  temperature float,
+			  humidity float,
+			  pressure float,
+			  windSpeed float,
+			  windDirection float) AS
+	$$
+	DECLARE
+		idReportConsulted integer;
+	BEGIN
+		--returns last id from the report table
+		select max(ar.idReport) from atmosphericReport as ar into idReportConsulted;
+		
+		RETURN QUERY
+		select ar.idReport, r.radiation, v.volume, pt.precipitation, l.light, tp.temperature, h.humidity, pr.pressure, ws.windSpeed, wd.windDirection
+		from atmosphericReport as ar
+		right join AR_radiation as r on ar.idReport = r.idReport
+		right join AR_volume as v on ar.idReport = v.idReport
+		right join AR_precipitation as pt on ar.idReport = pt.idReport
+		right join AR_light as l on ar.idReport = l.idReport
+		right join AR_temperature as tp on ar.idReport = tp.idReport
+		right join AR_humidity as h on ar.idReport = h.idReport
+		right join AR_pressure as pr on ar.idReport = pr.idReport
+		right join AR_windSpeed as ws on ar.idReport = ws.idReport
+		right join AR_windDirection as wd on ar.idReport = wd.idReport
+		where ar.idReport = idReportConsulted;
+	END;
+	$$
+Language plpgsql;
+
+--Returns the values of the reports created by a specific device on a time lapse
+CREATE OR REPLACE FUNCTION getAtmosphericReports(idDeviceConsulted integer, fromDate TIMESTAMP, toDate TIMESTAMP) 
+RETURNS TABLE(idReport integer,
+			  reportDate TIMESTAMP,
+			  radiation float,
+			  volume float,
+			  precipitation float,
+			  light float,
+			  temperature float,
+			  humidity float,
+			  pressure float,
+			  windSpeed float,
+			  windDirection float) AS
+	$$
+	BEGIN		
+		RETURN QUERY
+		select ar.idReport, tv.dateTime, r.radiation, v.volume, pt.precipitation, l.light, tp.temperature, h.humidity, pr.pressure, ws.windSpeed, wd.windDirection
+		from atmosphericDevice as ad
+		left join atmosphericReport as ar on ad.idDevice = ar.idDevice
+		right join TimeVector as tv on ar.idTime = tv.idTime
+		left join AR_radiation as r on ar.idReport = r.idReport
+		left join AR_volume as v on ar.idReport = v.idReport
+		left join AR_precipitation as pt on ar.idReport = pt.idReport
+		left join AR_light as l on ar.idReport = l.idReport
+		left join AR_temperature as tp on ar.idReport = tp.idReport
+		left join AR_humidity as h on ar.idReport = h.idReport
+		left join AR_pressure as pr on ar.idReport = pr.idReport
+		left join AR_windSpeed as ws on ar.idReport = ws.idReport
+		left join AR_windDirection as wd on ar.idReport = wd.idReport
+		where ad.idDevice = idDeviceConsulted and (tv.dateTime >= fromDate and tv.dateTime <= toDate)
+    	ORDER BY tv.dateTime;
+	END;
+	$$
+Language plpgsql;
+
 --*****AR Volume table*****
 CREATE OR REPLACE FUNCTION addARVolume(idVolume_r integer, idReport_r integer, volume_r float) RETURNS void AS
 	$$
