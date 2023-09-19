@@ -56,56 +56,56 @@ create table WQ_conductivity(
 	idConduct integer not null,
 	idReport integer not null,
 	conductivity float not null,
-	PRIMARY KEY (idConduct)
+	PRIMARY KEY (idConduct,idReport)
 );
 
 create table WQ_waterlvl(
 	idWaterlvl integer not null,
 	idReport integer not null,
 	waterLevel float not null,
-	PRIMARY KEY (idWaterlvl)
+	PRIMARY KEY (idWaterlvl,idReport)
 );
 
 create table WQ_ph(
 	idPH integer not null,
 	idReport integer not null,
 	ph float not null,
-	PRIMARY KEY (idPH)
+	PRIMARY KEY (idPH,idReport)
 );
 
 create table WQ_salinity(
 	idSalinity integer not null,
 	idReport integer not null,
 	salinity float not null,
-	PRIMARY KEY (idSalinity)
+	PRIMARY KEY (idSalinity,idReport)
 );
 
 create table WQ_turbidity(
 	idTurbidity integer not null,
 	idReport integer not null,
 	turbidity float not null,
-	PRIMARY KEY (idTurbidity)
+	PRIMARY KEY (idTurbidity,idReport)
 );
 
 create table WQ_solids(
 	idSolids integer not null,
 	idReport integer not null,
 	solids float not null,
-	PRIMARY KEY (idSolids)
+	PRIMARY KEY (idSolids,idReport)
 );
 
 create table WQ_temperature(
 	idTemperature integer not null,
 	idReport integer not null,
 	temperature float not null,
-	PRIMARY KEY (idTemperature)
+	PRIMARY KEY (idTemperature,idReport)
 );
 
 create table WQ_volume(
 	idVolume integer not null,
 	idReport integer not null,
 	volume float not null,
-	PRIMARY KEY (idVolume)
+	PRIMARY KEY (idVolume,idReport)
 );
 
 
@@ -132,63 +132,63 @@ create table AR_radiation(
 	idRadiation integer not null,
 	idReport integer not null,
 	radiation float not null,
-	PRIMARY KEY (idRadiation)
+	PRIMARY KEY (idRadiation,idReport)
 );
 
 create table AR_volume(
 	idVolume integer not null,
 	idReport integer not null,
 	volume float not null,
-	PRIMARY KEY (idVolume)
+	PRIMARY KEY (idVolume,idReport)
 );
 
 create table AR_precipitation(
 	idPrecipitation integer not null,
 	idReport integer not null,
 	precipitation float not null,
-	PRIMARY KEY (idPrecipitation)
+	PRIMARY KEY (idPrecipitation,idReport)
 );
 
 create table AR_light(
 	idLight integer not null,
 	idReport integer not null,
 	light float not null,
-	PRIMARY KEY (idLight)
+	PRIMARY KEY (idLight,idReport)
 );
 
 create table AR_temperature(
 	idTemperature integer not null,
 	idReport integer not null,
 	temperature float not null,
-	PRIMARY KEY (idTemperature)
+	PRIMARY KEY (idTemperature,idReport)
 );
 
 create table AR_humidity(
 	idHumidity integer not null,
 	idReport integer not null,
 	humidity float not null,
-	PRIMARY KEY (idHumidity)
+	PRIMARY KEY (idHumidity,idReport)
 );
 
 create table AR_pressure(
 	idPressure integer not null,
 	idReport integer not null,
 	pressure float not null,
-	PRIMARY KEY (idPressure)
+	PRIMARY KEY (idPressure,idReport)
 );
 
 create table AR_windSpeed(
 	idWindSpeed integer not null,
 	idReport integer not null,
 	windSpeed float not null,
-	PRIMARY KEY (idWindSpeed)
+	PRIMARY KEY (idWindSpeed,idReport)
 );
 
 create table AR_windDirection(
 	idWindDirection integer not null,
 	idReport integer not null,
 	windDirection float not null,
-	PRIMARY KEY (idWindDirection)
+	PRIMARY KEY (idWindDirection,idReport)
 );
 
 

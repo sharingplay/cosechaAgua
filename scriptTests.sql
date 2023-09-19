@@ -30,33 +30,115 @@ SELECT getQualityDevices();
 SELECT addAtmosphericDevice(1, '255.255.0', '123.456.789', 2.4, '+50688665544', 1, 'San Jose');
 SELECT addAtmosphericDevice(2, '255.254.1', '987.456.987', 1.3, '+50688665544', 2, 'Cartago Campeon');
 SELECT modifyAtmosphericDevice (2, '654.654','888.777', 1.5, '+50624451234', 1, 'San Jose');
-SELECT getLastAtmosphericDevice();
-SELECT getAtmosphericDevices();
-SELECT getAtmosphericDevice(1);
+SELECT * from getLastAtmosphericDevice();
+SELECT * from getAtmosphericDevices();
+SELECT * from getAtmosphericDevice(1);
 
 
 --Water Quality Report
-SELECT addQualityReport(2);
---WQ Conductivity
-SELECT addConductivity(2,2,20.5);
---WQ PH
-SELECT addPH(5,2,7);
---WQ water level
-SELECT addWaterlvl(1,2,10.3);
---WQ salinity
-SELECT addsalinity(1,3,7.5);
---WQ turbidity
-SELECT addTurbidity(1,3,7.5);
---WQ solids
-SELECT addSolids(1,3,7.5);
---WQ temperature
-SELECT addWQTemperature(3,3,23);
---WQ volume
-SELECT addWQVolume(3,3,20);
+SELECT addQualityReport(1);
 
+--Sensor number, Report ID, Value
+--WQ Conductivity
+SELECT addConductivity(1,2,2.1);
+SELECT addConductivity(2,2,2.2);
+SELECT addConductivity(3,2,2.3);
+SELECT addConductivity(1,3,3.1);
+SELECT addConductivity(2,3,3.2);
+SELECT addConductivity(3,3,3.3);
+SELECT addConductivity(1,7,7.1);
+SELECT addConductivity(2,7,7.2);
+SELECT addConductivity(3,7,7.3);
+
+--WQ PH
+SELECT addPH(1,2,22.1);
+SELECT addPH(2,2,22.2);
+SELECT addPH(3,2,22.3);
+SELECT addPH(1,3,33.1);
+SELECT addPH(2,3,33.2);
+SELECT addPH(3,3,33.3);
+SELECT addPH(1,7,77.1);
+SELECT addPH(2,7,77.2);
+SELECT addPH(3,7,77.3);
+
+--WQ water level
+SELECT addWaterlvl(1,2,20.1);
+SELECT addWaterlvl(2,2,20.2);
+SELECT addWaterlvl(3,2,20.3);
+SELECT addWaterlvl(1,3,30.1);
+SELECT addWaterlvl(2,3,30.2);
+SELECT addWaterlvl(3,3,30.3);
+SELECT addWaterlvl(1,7,70.1);
+SELECT addWaterlvl(2,7,70.2);
+SELECT addWaterlvl(3,7,70.3);
+
+--WQ salinity
+SELECT addsalinity(1,2,20.10);
+SELECT addsalinity(2,2,20.20);
+SELECT addsalinity(3,2,20.30);
+SELECT addsalinity(1,3,30.10);
+SELECT addsalinity(2,3,30.20);
+SELECT addsalinity(3,3,30.30);
+SELECT addsalinity(1,7,70.10);
+SELECT addsalinity(2,7,70.20);
+SELECT addsalinity(3,7,70.30);
+
+--WQ turbidity
+SELECT addTurbidity(1,2,2.01);
+SELECT addTurbidity(2,2,2.02);
+SELECT addTurbidity(3,2,2.03);
+SELECT addTurbidity(1,3,3.01);
+SELECT addTurbidity(2,3,3.02);
+SELECT addTurbidity(3,3,3.03);
+SELECT addTurbidity(1,7,7.01);
+SELECT addTurbidity(2,7,7.02);
+SELECT addTurbidity(3,7,7.03);
+
+--WQ solids
+SELECT addSolids(1,2,2.001);
+SELECT addSolids(2,2,2.002);
+SELECT addSolids(3,2,2.003);
+SELECT addSolids(1,3,3.001);
+SELECT addSolids(2,3,3.002);
+SELECT addSolids(3,3,3.003);
+SELECT addSolids(1,7,7.001);
+SELECT addSolids(2,7,7.002);
+SELECT addSolids(3,7,7.003);
+--WQ temperature
+SELECT addWQTemperature(1,2,20.001);
+SELECT addWQTemperature(2,2,20.002);
+SELECT addWQTemperature(3,2,20.003);
+SELECT addWQTemperature(1,3,30.001);
+SELECT addWQTemperature(2,3,30.002);
+SELECT addWQTemperature(3,3,30.003);
+SELECT addWQTemperature(1,7,70.001);
+SELECT addWQTemperature(2,7,70.002);
+SELECT addWQTemperature(3,7,70.003);
+--WQ volume
+SELECT addWQVolume(1,2,22.001);
+SELECT addWQVolume(2,2,22.002);
+SELECT addWQVolume(3,2,22.003);
+SELECT addWQVolume(1,3,33.001);
+SELECT addWQVolume(2,3,33.002);
+SELECT addWQVolume(3,3,33.003);
+SELECT addWQVolume(1,7,77.001);
+SELECT addWQVolume(2,7,77.002);
+SELECT addWQVolume(3,7,77.003);
+
+select * from waterQuality; --2,3,7
+select * from WQ_conductivity;
+select * from WQ_ph;
+select * from WQ_waterlvl;
+select * from WQ_salinity;
+select * from WQ_solids;
+select * from WQ_turbidity;
+select * from WQ_temperature;
+select * from WQ_volume;
 
 --Atmospheric Report
-SELECT addAtmosphericReport(1);
+SELECT addAtmosphericReport(2);
+
+--Sensor number, Report ID, Value
 --AR volume
 SELECT addARVolume(1,5,44);
 --AR radiation
@@ -80,7 +162,7 @@ SELECT * from getLastAtmosphericReport();
 --Reports between specific times *************************PROBAR ESTA FUNCION pero corregir antes lo de arreglar multiples sensores
 select * from getAtmosphericReports(1, '2023-09-09 01:00:00', '2023-09-17 17:00:00')
 
-select * from atmosphericReport;
+select * from atmosphericReport; -- 3, 5, 7
 select * from AR_radiation;
 select * from AR_volume;
 select * from AR_light;
@@ -91,6 +173,3 @@ select * from AR_pressure;
 select * from AR_windSpeed;
 select * from AR_windDirection;
 select * from timeVector;
-
-SELECT * from CURRENT_TIMESTAMP;
-
