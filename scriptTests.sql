@@ -158,8 +158,11 @@ SELECT addWindSpeed(1,5,10.5);
 --AR wind direction
 SELECT addWindDirection(1,5,45.1);
 --Last report
-SELECT * from getLastAtmosphericReport();
---Reports between specific times *************************PROBAR ESTA FUNCION pero corregir antes lo de arreglar multiples sensores
+select * from atmosphericReport;
+select * from ar_volume;
+SELECT * from getLastAtmosphericReport(1);
+
+--Reports between specific times
 select * from getAtmosphericReports(1, '2023-09-09 01:00:00', '2023-09-17 17:00:00')
 
 select * from atmosphericReport; -- 3, 5, 7

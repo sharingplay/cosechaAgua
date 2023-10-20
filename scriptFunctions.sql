@@ -268,8 +268,9 @@ CREATE OR REPLACE FUNCTION addAtmosphericReport(idDevice_r integer) RETURNS inte
 Language plpgsql;
 
 --Returns the values of the last report created
-CREATE OR REPLACE FUNCTION getLastAtmosphericReport() 
+CREATE OR REPLACE FUNCTION getLastAtmosphericReport(idDevice_r integer) 
 RETURNS TABLE(idReport integer,
+			  reportDate TIMESTAMP,
 			  radiation float,
 			  volume float,
 			  precipitation float,
@@ -287,8 +288,9 @@ RETURNS TABLE(idReport integer,
 		select max(ar.idReport) from atmosphericReport as ar into idReportConsulted;
 		
 		RETURN QUERY
-		select ar.idReport, r.radiation, v.volume, pt.precipitation, l.light, tp.temperature, h.humidity, pr.pressure, ws.windSpeed, wd.windDirection
+		select ar.idReport, tv.dateTime, r.radiation, v.volume, pt.precipitation, l.light, tp.temperature, h.humidity, pr.pressure, ws.windSpeed, wd.windDirection
 		from atmosphericReport as ar
+		right join TimeVector as tv on ar.idTime = tv.idTime
 		right join AR_radiation as r on ar.idReport = r.idReport
 		right join AR_volume as v on ar.idReport = v.idReport
 		right join AR_precipitation as pt on ar.idReport = pt.idReport
@@ -298,7 +300,8 @@ RETURNS TABLE(idReport integer,
 		right join AR_pressure as pr on ar.idReport = pr.idReport
 		right join AR_windSpeed as ws on ar.idReport = ws.idReport
 		right join AR_windDirection as wd on ar.idReport = wd.idReport
-		where ar.idReport = idReportConsulted;
+		where ar.idReport = idReportConsulted
+		and ar.idDevice = idDevice_r;
 	END;
 	$$
 Language plpgsql;
@@ -350,6 +353,13 @@ CREATE OR REPLACE FUNCTION addRadiation(idRadiation_r integer, idReport_r intege
 	$$
 	insert into AR_radiation values (idRadiation_r, idReport_r, radiation_r);
 	$$
+Language SQL;
+
+--*****AR Precipitation table*****
+CREATE OR REPLACE FUNCTION addPrecipitation(idPrecipitation_r integer, idReport_r integer, precipitation_r float) RETURNS void AS
+    $$
+    insert into AR_precipitation values (idPrecipitation_r, idReport_r, precipitation_r);
+    $$
 Language SQL;
 
 --*****AR light table*****
