@@ -8,7 +8,8 @@ SELECT addDeviceLocation('Cartago', '112.355.4489', '11452.365.458');
 SELECT addDeviceLocation('San Jose', '255.255.255', '213.235.254');
 SELECT getLocations();
 SELECT modifyDeviceLocation('Cartago', 'Cartago Campeon', '112.355.4489', '11452.365.458');
-select * from deviceLocation
+select * from deviceLocation;
+
 
 --Frecuencies
 SELECT addFrequency(2, 3.3, 4.5, 6.7);
@@ -23,7 +24,8 @@ SELECT addQualityDevice(2, '000.123.412', '000.456.123', '6.7', '+506111111', 1,
 SELECT getLastQualityDevice();
 SELECT modifyQualityDevice (2, '987.654','888.777', 1.5, '+50624451234', 1, 'San Jose');
 SELECT getQualityDevice(2);
-SELECT getQualityDevices();
+SELECT * from getQualityDevices();
+select * from qualityDevice;
 
 
 --Atmospheric Device
@@ -33,6 +35,15 @@ SELECT modifyAtmosphericDevice (2, '654.654','888.777', 1.5, '+50624451234', 1, 
 SELECT * from getLastAtmosphericDevice();
 SELECT * from getAtmosphericDevices();
 SELECT * from getAtmosphericDevice(1);
+select * from atmosphericDevice;
+
+--Flow Device
+
+select addFlowDevice('San Jose', 'nuevo dispositivo de flujo');
+select addFlow(1, 2, 12.3);
+select * from getFlowDevices();
+select * from Flow;
+
 
 
 --Water Quality Report

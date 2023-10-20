@@ -26,3 +26,8 @@ execute procedure check_timeVector();
 Create Trigger manageTimeVector before insert on atmosphericReport
 for each row
 execute procedure check_timeVector();
+
+--*****Triggers Flow Device*****
+Create Trigger manageTimeVector before insert on Flow
+for each row
+execute procedure check_timeVector();

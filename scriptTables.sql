@@ -1,6 +1,6 @@
 	CREATE EXTENSION pgcrypto;
 
---Users table 
+--Users 
 create Table Users (
 	userName varchar (30) not null,
 	name varchar (40) not null,
@@ -12,6 +12,7 @@ create Table Users (
 	PRIMARY key (userName)
 );
 
+--Device location
 create table DeviceLocation(
 	located varchar(50) not null,
 	latitude varchar(30) not null,
@@ -19,6 +20,7 @@ create table DeviceLocation(
 	PRIMARY key (located)
 );
 
+--Frequencies
 create table Frequencies(
 	idFrequency integer not null,
 	meassureFrequency float not null,
@@ -27,16 +29,37 @@ create table Frequencies(
 	PRIMARY KEY (idFrequency)
 );
 
+--Time vector
 create table timeVector (
 	idTime serial not null,
 	dateTime TIMESTAMP not NULL,
 	primary key (idTime)
 );
 
+--Flow Device
+create table FlowDevice (
+	idDevice serial not null,
+	located varchar(50) not null,
+	name varchar (30) not null,
+	primary key (idDevice)
+);
+
+--Flow table
+create table Flow (
+	idFlow integer not null,
+	idDevice integer not null,
+	idTime integer not null,
+	flow float not null,
+	primary key (idFlow, idDevice)
+);
+
+
+
 -- Quality Device
 create table QualityDevice(
 	idDevice integer not null,
 	ip varchar (30) not null,
+	name varchar(30) not null,
 	mac varchar (30) not null,
 	tolerance float not null,
 	phoneNumber varchar (30) not null,
@@ -113,6 +136,7 @@ create table WQ_volume(
 create table atmosphericDevice(
 	idDevice integer not null,
 	ip varchar (30) not null,
+	name varchar(30) not null,
 	mac varchar (30) not null,
 	tolerance float not null,
 	phoneNumber varchar (30) not null,
@@ -251,6 +275,16 @@ foreign key (idFrequency) references Frequencies(idFrequency);
 alter table QualityDevice 
 add constraint FK_location
 foreign key (located) references DeviceLocation(located);
+
+--Table constraints Flow Device
+alter table FlowDevice
+add constraint FK_FlowLocation
+foreign key (located) references DeviceLocation(located);
+
+alter table Flow
+add constraint FK_idDevice
+foreign key (idDevice) references FlowDevice(idDevice);
+
 
 --Table constraints Atmospheric Device
 alter table AtmosphericDevice 

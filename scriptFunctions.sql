@@ -102,19 +102,58 @@ CREATE OR REPLACE FUNCTION modifyFrequencies(idFrequency_r integer, meassureFreq
 Language SQL;
 
 
---*****Quality Device table*****
---Add a new Quality device
-CREATE OR REPLACE FUNCTION addQualityDevice(idDevice integer, ip varchar, mac varchar, tolerance float, phoneNumber varchar, idFrequency integer, located varchar) RETURNS void AS 
+--*****Flow Device table*****
+--Add flow device
+CREATE OR REPLACE FUNCTION addFlowDevice(located varchar, name varchar) RETURNS integer AS 
 	$$
-	insert into QualityDevice values (idDevice, ip, mac, tolerance, phoneNumber, idFrequency, located);
+	DECLARE
+		idReportCreated integer;
+	BEGIN
+		insert into FlowDevice(located, name) values (located, name);
+		select MAX(idDevice) from FlowDevice into idReportCreated;
+		return idReportCreated;
+	END;
+	$$
+Language plpgsql;
+
+--Get all flow devices
+CREATE OR REPLACE FUNCTION getFlowDevices() RETURNS SETOF FlowDevice AS 
+	$$
+	SELECT * FROM FlowDevice;
 	$$
 Language SQL;
 
+--Update flow device
+CREATE OR REPLACE FUNCTION modifyFlowDevice(idDevice_r integer, located_new varchar, name_new varchar) RETURNS void AS 
+	$$
+	UPDATE FlowDevice set located = located_new, name = name_new
+	WHERE idDevice = idDevice_r;
+	$$
+Language SQL;
+
+--*****Flow table*****
+--Add new flow meassure
+CREATE OR REPLACE FUNCTION addFlow(idFlow_r integer, idDevice_r integer, flow_r float) RETURNS void AS 
+	$$
+	insert into Flow(idFlow, idDevice, flow) values (idFlow_r, idDevice_r, flow_r);
+	$$
+Language SQL;
+
+
+--*****Quality Device table*****
+--Add a new Quality device
+CREATE OR REPLACE FUNCTION addQualityDevice(idDevice integer, ip varchar, name_r varchar, mac varchar, tolerance float, phoneNumber varchar, idFrequency integer, located varchar) RETURNS void AS 
+	$$
+	insert into QualityDevice values (idDevice, ip, name_r, mac, tolerance, phoneNumber, idFrequency, located);
+	$$
+Language SQL;
+
+
 --Update a Quality Device
-CREATE OR REPLACE FUNCTION modifyQualityDevice(idDevice_r integer, ip_new varchar, mac_new varchar, tolerance_new float,
+CREATE OR REPLACE FUNCTION modifyQualityDevice(idDevice_r integer, ip_new varchar, name_new varchar, mac_new varchar, tolerance_new float,
 											   phoneNumber_new varchar, idFrequency_new integer, located_new varchar) RETURNS void AS 
 	$$
-	UPDATE QualityDevice set ip = ip_new, mac = mac_new, tolerance = tolerance_new, phoneNumber = phoneNumber_new,
+	UPDATE QualityDevice set ip = ip_new, name = name_new, mac = mac_new, tolerance = tolerance_new, phoneNumber = phoneNumber_new,
 	idFrequency = idFrequency_new, located = located_new
 	WHERE idDevice = idDevice_r;
 	$$
@@ -144,17 +183,17 @@ Language SQL;
 
 --*****Atmospheric Device table*****
 --Add a new Atmospheric device
-CREATE OR REPLACE FUNCTION addAtmosphericDevice(idDevice integer, ip varchar, mac varchar, tolerance float, phoneNumber varchar, idFrequency integer, located varchar) RETURNS void AS 
+CREATE OR REPLACE FUNCTION addAtmosphericDevice(idDevice integer, ip varchar, name_r varchar, mac varchar, tolerance float, phoneNumber varchar, idFrequency integer, located varchar) RETURNS void AS 
 	$$
-	insert into atmosphericDevice values (idDevice, ip, mac, tolerance, phoneNumber, idFrequency, located);
+	insert into atmosphericDevice values (idDevice, ip, name_r, mac, tolerance, phoneNumber, idFrequency, located);
 	$$
 Language SQL;
 
 --Update a Atmospheric Device
-CREATE OR REPLACE FUNCTION modifyAtmosphericDevice(idDevice_r integer, ip_new varchar, mac_new varchar, tolerance_new float,
+CREATE OR REPLACE FUNCTION modifyAtmosphericDevice(idDevice_r integer, ip_new varchar, name_new varchar, mac_new varchar, tolerance_new float,
 											   phoneNumber_new varchar, idFrequency_new integer, located_new varchar) RETURNS void AS 
 	$$
-	UPDATE AtmosphericDevice set ip = ip_new, mac = mac_new, tolerance = tolerance_new, phoneNumber = phoneNumber_new,
+	UPDATE AtmosphericDevice set ip = ip_new, name = name_new, mac = mac_new, tolerance = tolerance_new, phoneNumber = phoneNumber_new,
 	idFrequency = idFrequency_new, located = located_new
 	WHERE idDevice = idDevice_r;
 	$$
@@ -285,7 +324,7 @@ RETURNS TABLE(idReport integer,
 		idReportConsulted integer;
 	BEGIN
 		--returns last id from the report table
-		select max(ar.idReport) from atmosphericReport as ar into idReportConsulted;
+		select max(ar.idReport) from atmosphericReport as ar into idReportConsulted where idDevice = idDevice_r;
 		
 		RETURN QUERY
 		select ar.idReport, tv.dateTime, r.radiation, v.volume, pt.precipitation, l.light, tp.temperature, h.humidity, pr.pressure, ws.windSpeed, wd.windDirection
@@ -300,8 +339,7 @@ RETURNS TABLE(idReport integer,
 		right join AR_pressure as pr on ar.idReport = pr.idReport
 		right join AR_windSpeed as ws on ar.idReport = ws.idReport
 		right join AR_windDirection as wd on ar.idReport = wd.idReport
-		where ar.idReport = idReportConsulted
-		and ar.idDevice = idDevice_r;
+		where ar.idReport = idReportConsulted;
 	END;
 	$$
 Language plpgsql;
