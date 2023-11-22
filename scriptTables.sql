@@ -44,15 +44,22 @@ create table FlowDevice (
 	primary key (idDevice)
 );
 
+
+--Flow report
+create table FlowReport (
+	idReport serial not null,
+	idDevice int not null,
+	idTime int not null,
+	primary key (idReport)
+);
+
 --Flow table
 create table Flow (
 	idFlow integer not null,
-	idDevice integer not null,
-	idTime integer not null,
+	idReport integer not null,
 	flow float not null,
-	primary key (idFlow, idDevice)
+	primary key (idFlow, idReport)
 );
-
 
 
 -- Quality Device
@@ -215,7 +222,6 @@ create table AR_windDirection(
 	PRIMARY KEY (idWindDirection,idReport)
 );
 
-
 alter table Users 
 add constraint unique_email
 unique (email);
@@ -281,9 +287,19 @@ alter table FlowDevice
 add constraint FK_FlowLocation
 foreign key (located) references DeviceLocation(located);
 
+--Table constraints FLOW
 alter table Flow
 add constraint FK_idDevice
+foreign key (idReport) references flowReport(idReport);
+
+--Table constraints FLOW report
+alter table flowReport 
+add constraint FK_idDeviceFlReport
 foreign key (idDevice) references FlowDevice(idDevice);
+
+alter table flowReport 
+add constraint FK_idTimeFlRep
+foreign key (idTime) references timeVector(idTime);
 
 
 --Table constraints Atmospheric Device

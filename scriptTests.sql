@@ -40,9 +40,13 @@ select * from atmosphericDevice;
 --Flow Device
 
 select addFlowDevice('San Jose', 'nuevo dispositivo de flujo');
-select addFlow(1, 2, 12.3);
 select * from getFlowDevices();
+select addFlowReport(4);
+select * from flowReport; 
+select addFlow(1, 3,15);
+select addFlow(2, 3,20);
 select * from Flow;
+select * from getLastFlowReport(4);
 
 
 
@@ -169,9 +173,19 @@ SELECT addWindSpeed(1,5,10.5);
 --AR wind direction
 SELECT addWindDirection(1,5,45.1);
 --Last report
-select * from atmosphericReport;
-select * from ar_volume;
 SELECT * from getLastAtmosphericReport(1);
+
+select * from qualityDevice; -- idDevice 1, 2
+select * from waterQuality; -- idReport -->idDevice: 2 --> 2, 3 --> 2, 7 --> 1
+select * from WQ_conductivity;
+select * from WQ_ph;
+select * from WQ_salinity;
+select * from WQ_turbidity;
+select * from WQ_solids;
+select * from WQ_temperature;
+select * from WQ_volume;
+select * from WQ_waterlvl;
+SELECT * from getLastQualityReport(1);
 
 --Reports between specific times
 select * from getAtmosphericReports(1, '2023-09-09 01:00:00', '2023-09-17 17:00:00')
@@ -187,3 +201,50 @@ select * from AR_pressure;
 select * from AR_windSpeed;
 select * from AR_windDirection;
 select * from timeVector;
+
+select * from prueba(1);
+
+--Esta funcion tiene que devolver el ultimo reporte de calidad de agua por idDevice
+CREATE OR REPLACE FUNCTION prueba(idDevice_r integer) 
+RETURNS TABLE(idReport integer,
+              reportDate TIMESTAMP,
+              conductivity float,
+              waterlvl float,
+              ph float,
+              salinity float,
+              turbidity float,
+              solids float,
+              temperature float,
+              volume float) AS
+$$
+DECLARE
+    lastReportId integer;
+BEGIN
+    SELECT max(wq.idReport)
+    INTO lastReportId
+    FROM waterQuality
+	as wq
+    WHERE idDevice = idDevice_r;
+
+    RETURN QUERY
+    SELECT wq.idReport, tv.dateTime,
+           (SELECT wc.conductivity FROM WQ_conductivity as wc WHERE wc.idReport = wq.idReport),
+           (SELECT wl.waterLevel FROM WQ_waterlvl as wl WHERE wl.idReport = wq.idReport),
+           (SELECT wph.ph FROM WQ_ph as wph WHERE wph.idReport = wq.idReport),
+           (SELECT ws.salinity FROM WQ_salinity as ws WHERE ws.idReport = wq.idReport),
+           (SELECT wt.turbidity FROM WQ_turbidity as wt WHERE wt.idReport = wq.idReport),
+           (SELECT wso.solids FROM WQ_solids as wso WHERE wso.idReport = wq.idReport),
+           (SELECT wtp.temperature FROM WQ_temperature as wtp WHERE wtp.idReport = wq.idReport),
+           (SELECT wv.volume FROM WQ_volume as wv WHERE wv.idReport = wq.idReport)
+    FROM waterQuality AS wq
+    JOIN timeVector AS tv ON wq.idTime = tv.idTime
+    WHERE wq.idReport = lastReportId;
+END;
+$$
+LANGUAGE plpgsql;
+
+
+
+
+
+

@@ -28,6 +28,6 @@ for each row
 execute procedure check_timeVector();
 
 --*****Triggers Flow Device*****
-Create Trigger manageTimeVector before insert on Flow
+Create Trigger manageTimeVector before insert on FlowReport
 for each row
 execute procedure check_timeVector();

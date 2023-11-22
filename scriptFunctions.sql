@@ -104,17 +104,11 @@ Language SQL;
 
 --*****Flow Device table*****
 --Add flow device
-CREATE OR REPLACE FUNCTION addFlowDevice(located varchar, name varchar) RETURNS integer AS 
+CREATE OR REPLACE FUNCTION addFlowDevice(located varchar, name varchar) RETURNS void AS 
 	$$
-	DECLARE
-		idReportCreated integer;
-	BEGIN
-		insert into FlowDevice(located, name) values (located, name);
-		select MAX(idDevice) from FlowDevice into idReportCreated;
-		return idReportCreated;
-	END;
+	insert into FlowDevice(located, name) values (located, name);
 	$$
-Language plpgsql;
+Language SQL;
 
 --Get all flow devices
 CREATE OR REPLACE FUNCTION getFlowDevices() RETURNS SETOF FlowDevice AS 
@@ -131,11 +125,47 @@ CREATE OR REPLACE FUNCTION modifyFlowDevice(idDevice_r integer, located_new varc
 	$$
 Language SQL;
 
+--*****Flow Report table*****
+--Add flow report
+CREATE OR REPLACE FUNCTION addFlowReport(idDevice_r integer) RETURNS integer AS
+	$$
+	DECLARE
+		idReportCreated integer;
+	BEGIN
+		insert into flowReport(idDevice) values (idDevice_r);
+		select MAX(idReport) from flowReport into idReportCreated;
+		return idReportCreated;
+	END;
+	$$
+Language plpgsql;
+
+--Get last flow report
+CREATE OR REPLACE FUNCTION getLastFlowReport(idDevice_r integer) 
+RETURNS TABLE(idReport integer,
+			  reportDate TIMESTAMP,
+			  idFlow integer,
+			  Flow float) AS
+	$$
+	DECLARE
+		idReportConsulted integer;
+	BEGIN
+		--returns last id from the report table
+		select max(fr.idReport) from flowReport as fr into idReportConsulted where idDevice = idDevice_r;
+		RETURN QUERY
+		select fr.idReport, tv.dateTime, f.idFlow, f.Flow
+		from flowReport as fr
+		inner join TimeVector as tv on fr.idTime = tv.idTime
+		inner join Flow as f on f.idReport = fr.idReport
+		where fr.idReport = idReportConsulted;
+	END;
+	$$
+Language plpgsql;
+
 --*****Flow table*****
 --Add new flow meassure
-CREATE OR REPLACE FUNCTION addFlow(idFlow_r integer, idDevice_r integer, flow_r float) RETURNS void AS 
+CREATE OR REPLACE FUNCTION addFlow(idFlow_r integer, idReport_r integer, flow_r float) RETURNS void AS 
 	$$
-	insert into Flow(idFlow, idDevice, flow) values (idFlow_r, idDevice_r, flow_r);
+	insert into Flow values (idFlow_r, idReport_r, flow_r);
 	$$
 Language SQL;
 
@@ -231,6 +261,42 @@ CREATE OR REPLACE FUNCTION addQualityReport(idDevice_r integer) RETURNS integer 
 		insert into waterQuality(idDevice) values (idDevice_r);
 		select MAX(idReport) from waterQuality into idReportCreated;
 		return idReportCreated;
+	END;
+	$$
+Language plpgsql;
+
+--Return the last water quality report created according to a device ID *********************NO SIRVE PARA MULTIPLES SENSORES
+CREATE OR REPLACE FUNCTION getLastQualityReport(idDevice_r integer) 
+RETURNS TABLE(idReport integer,
+			  reportDate TIMESTAMP,
+			  conductivity float,
+			  waterlvl float,
+			  ph float,
+			  salinity float,
+			  turbidity float,
+			  solids float,
+			  temperature float,
+			  volume float) AS
+	$$
+	DECLARE
+		idReportConsulted integer;
+	BEGIN
+		--returns last id from the report table
+		select max(wq.idReport) from waterQuality as wq into idReportConsulted where idDevice = idDevice_r;
+		
+		RETURN QUERY
+		select wq.idReport, tv.dateTime, wc.conductivity, wl.waterLevel, wph.ph, ws.salinity, wt.turbidity, wso.solids, wtp.temperature, wv.volume
+		from waterQuality as wq
+		inner join TimeVector as tv on wq.idTime = tv.idTime
+		inner join WQ_conductivity as wc on wq.idReport = wc.idReport
+		inner join WQ_waterlvl as wl on wq.idReport = wl.idReport
+		inner join WQ_ph as wph on wq.idReport = wph.idReport
+		inner join WQ_salinity as ws on wq.idReport = ws.idReport
+		inner join WQ_turbidity as wt on wq.idReport = wt.idReport
+		inner join WQ_solids as wso on wq.idReport = wso.idReport
+		inner join WQ_temperature as wtp on wq.idReport = wtp.idReport
+		inner join WQ_volume as wv on wq.idReport = wv.idReport
+		where wq.idReport = idReportConsulted;
 	END;
 	$$
 Language plpgsql;
