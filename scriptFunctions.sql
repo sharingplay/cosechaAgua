@@ -161,6 +161,25 @@ RETURNS TABLE(idReport integer,
 	$$
 Language plpgsql;
 
+--Get reports by time
+CREATE OR REPLACE FUNCTION getFlowReports(idDeviceConsulted integer, fromDate TIMESTAMP, toDate TIMESTAMP) 
+RETURNS TABLE(idReport integer,
+			  reportDate TIMESTAMP,
+			  idFlow integer,
+			  Flow float) AS
+	$$
+	BEGIN		
+		RETURN QUERY
+		select fr.idReport, tv.dateTime, f.idFlow, f.Flow from flowReport as fr
+		inner join TimeVector as tv on fr.idTime = tv.idTime
+		inner join Flow as f on f.idReport = fr.idReport
+		inner join FlowDevice as fd on fd.idDevice = fr.idDevice
+		where fd.idDevice = idDeviceConsulted and (tv.dateTime >= fromDate and tv.dateTime <= toDate)
+    	ORDER BY tv.dateTime;
+	END;
+	$$
+Language plpgsql;
+
 --*****Flow table*****
 --Add new flow meassure
 CREATE OR REPLACE FUNCTION addFlow(idFlow_r integer, idReport_r integer, flow_r float) RETURNS void AS 

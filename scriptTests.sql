@@ -43,11 +43,12 @@ select addFlowDevice('San Jose', 'nuevo dispositivo de flujo');
 select * from getFlowDevices();
 select addFlowReport(4);
 select * from flowReport; 
-select addFlow(1, 3,15);
-select addFlow(2, 3,20);
+select addFlow(1, 4,100);
+select addFlow(2, 4,200);
+
 select * from Flow;
 select * from getLastFlowReport(4);
-
+select * from getFlowReports(4, '2023-11-21 20:55:00', '2023-11-21 21:15:00');
 
 
 --Water Quality Report
